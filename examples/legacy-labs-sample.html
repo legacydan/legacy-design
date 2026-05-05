@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Legacy Labs · sample deck (Vol. 01)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:ital,wght@0,500;0,600;0,700;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --brand-50:#eaf0ff; --brand-100:#d3deff; --brand-200:#a7beff; --brand-300:#7a9dff;
+    --brand-400:#4f7bff; --brand-500:#2e58e0; --brand-600:#1e3fb5; --brand-700:#152e8a;
+    --brand-800:#0b1f66; --brand-900:#060f3d; --brand-950:#02061e;
+    --accent:#5eeaff; --accent-soft:#b6f4ff; --accent-deep:#1fb8d9;
+    --ink-900:#0a1024; --ink-700:#1f2640; --ink-500:#4a516b; --ink-400:#6b7391;
+    --ink-300:#98a0b8; --ink-200:#c4cad9;
+    --paper:#fff; --mist:#f4f6fb; --mist-deep:#e8ecf5;
+    --hairline:rgba(10,16,36,0.08); --hairline-strong:rgba(10,16,36,0.14);
+    --font-display:"Inter Tight", system-ui, sans-serif;
+    --font-body:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono:"JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:#0a0d20; font-family: var(--font-body); color: var(--ink-700); -webkit-font-smoothing: antialiased; }
+
+  .deck { display: flex; flex-direction: column; gap: 48px; padding: 48px 24px 96px; align-items: center; }
+  .slide {
+    width: min(1280px, 96vw);
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 2px rgba(2,6,30,0.4), 0 30px 80px rgba(2,6,30,0.45);
+    display: grid;
+    padding: 6%;
+  }
+  .slide.dark { background: linear-gradient(135deg, var(--brand-950) 0%, var(--brand-900) 50%, var(--brand-800) 100%); color:#fff; }
+  .slide.light { background: var(--paper); color: var(--ink-900); }
+  .slide.mist { background: var(--mist); color: var(--ink-900); }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .light .eyebrow, .mist .eyebrow { color: var(--brand-600); }
+  .ey-cyan { color: var(--accent); }
+
+  .h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(56px, 6.5vw, 92px);
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+  .h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .h3 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .body {
+    font-family: var(--font-body);
+    font-size: 24px;
+    line-height: 1.55;
+    max-width: 60ch;
+    color: var(--ink-700);
+  }
+  .dark .body { color: var(--brand-200); }
+
+  /* layout helpers */
+  .stack { display: flex; flex-direction: column; gap: 24px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
+
+  /* logo */
+  .wordmark {
+    position: absolute;
+    bottom: 6%;
+    left: 6%;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .wordmark::before {
+    content: "";
+    width: 22px;
+    height: 2px;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .dark .wordmark { color:#fff; }
+  .light .wordmark, .mist .wordmark { color: var(--ink-900); }
+
+  /* page indicator */
+  .page {
+    position: absolute;
+    bottom: 6%;
+    right: 6%;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .dark .page { color: var(--brand-300); }
+  .light .page, .mist .page { color: var(--ink-400); }
+
+  /* Cover layout */
+  .cover { grid-template-rows: auto 1fr auto; gap: 48px; }
+  .cover .meta { display: flex; justify-content: space-between; align-items: center; }
+  .cover .meta .right { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--brand-300); }
+  .cover .h1 { max-width: 18ch; }
+  .cover .sub { font-size: 24px; color: var(--brand-200); max-width: 56ch; line-height: 1.55; }
+
+  /* KPI slide */
+  .kpi { grid-template-rows: auto 1fr auto; gap: 32px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: end; }
+  .kpi-cell .num {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(72px, 9vw, 132px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--brand-800);
+  }
+  .kpi-cell .num .accent { color: var(--accent-deep); }
+  .kpi-cell .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    margin-top: 12px;
+  }
+  .kpi-cell .sub {
+    font-family: var(--font-body);
+    font-size: 18px;
+    color: var(--ink-500);
+    margin-top: 8px;
+    max-width: 28ch;
+  }
+  .underline-accent {
+    box-shadow: inset 0 -8px 0 var(--accent);
+    padding: 0 2px;
+  }
+
+  /* Five-step slide */
+  .step .grid-5 .cell {
+    border-top: 1px solid var(--hairline-strong);
+    padding-top: 24px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .step .num-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brand-600);
+  }
+  .step .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--ink-900);
+  }
+  .step .desc {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink-500);
+  }
+  .step .dot { width: 8px; height: 8px; border-radius: 9999px; background: var(--accent); display: inline-block; margin-right: 8px; vertical-align: middle; }
+
+  /* Quote slide */
+  .quote { grid-template-rows: 1fr auto; gap: 32px; align-items: center; }
+  .quote .q {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(40px, 5vw, 64px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    max-width: 24ch;
+    color: #fff;
+  }
+  .quote .attr {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* Chart slide */
+  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .bars { display: grid; grid-template-rows: repeat(4, 1fr); gap: 16px; }
+  .bar-row { display: grid; grid-template-columns: 80px 1fr 80px; align-items: center; gap: 16px; }
+  .bar-row .lbl { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-500); }
+  .bar-row .track { height: 14px; background: var(--mist-deep); border-radius: 9999px; position: relative; overflow: hidden; }
+  .bar-row .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--brand-800); }
+  .bar-row.hl .fill { background: var(--accent-deep); }
+  .bar-row .val { font-family: var(--font-mono); font-size: 14px; color: var(--ink-700); text-align: right; }
+
+  /* Closing slide */
+  .closing { grid-template-rows: auto 1fr auto; gap: 48px; }
+  .closing .cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 28px;
+    border: 1px solid var(--accent);
+    border-radius: 9999px;
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 18px;
+    width: fit-content;
+  }
+  .closing .cta::after {
+    content: "→"; color: var(--accent);
+  }
+
+  .deck-header {
+    color: var(--ink-300);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+  <div class="deck-header">Legacy Design — Sample Deck · Vol. 01 · 2026</div>
+
+  <!-- 1. Cover -->
+  <section class="slide dark cover" aria-label="Cover">
+    <div class="meta">
+      <span class="eyebrow">Vol. 01 · 2026 · A Legacy Labs production</span>
+      <span class="right">01 / 06</span>
+    </div>
+    <div class="stack" style="align-self: center;">
+      <h1 class="h1">Your business, <span style="color: var(--accent)">empowered.</span></h1>
+      <p class="sub">Secure AI, fit to your flow, wired in by operators who've lived it. We don't replace what you do. We just make you better at doing it.</p>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+  </section>
+
+  <!-- 2. KPI -->
+  <section class="slide light kpi" aria-label="KPIs">
+    <div class="stack">
+      <span class="eyebrow">Act II · The numbers</span>
+      <h2 class="h2">What operator-grade AI looks like in 90 days.</h2>
+    </div>
+    <div class="kpi-row" style="align-self: center;">
+      <div class="kpi-cell">
+        <div class="num">12<span class="accent">×</span></div>
+        <div class="label">Faster intake</div>
+        <div class="sub">From 12 minutes per case to 90 seconds, end-to-end.</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="num">$<span class="underline-accent">2.4M</span></div>
+        <div class="label">Annual run-rate saved</div>
+        <div class="sub">Across one health-tech client, year one.</div>
+      </div>
+      <div class="kpi-cell">
+        <div class="num">100<span class="accent">%</span></div>
+        <div class="label">SOC 2 · HIPAA</div>
+        <div class="sub">Audit-ready by default. Your cloud, your controls.</div>
+      </div>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+    <div class="page">02 / 06</div>
+  </section>
+
+  <!-- 3. Five steps -->
+  <section class="slide mist step" aria-label="Process">
+    <div class="stack">
+      <span class="eyebrow">Our approach</span>
+      <h2 class="h2">Five steps. No magic. Just the work.</h2>
+    </div>
+    <div class="grid-5" style="align-self: end;">
+      <div class="cell">
+        <span class="num-eyebrow">Step 01 · Audit</span>
+        <span class="name">Read the business</span>
+        <span class="desc">Shadow the team. Map flows. Find where AI pays back, with dollars attached.</span>
+      </div>
+      <div class="cell">
+        <span class="num-eyebrow">Step 02 · Plan</span>
+        <span class="name">Choose the fights</span>
+        <span class="desc">One-page plan. Three battles, in order, with returns. Build starts the same week.</span>
+      </div>
+      <div class="cell">
+        <span class="num-eyebrow">Step 03 · Install</span>
+        <span class="name"><span class="dot"></span>Wire it in</span>
+        <span class="desc">Agents inside Stripe, Salesforce, your EHR. SOC 2 · HIPAA from day one.</span>
+      </div>
+      <div class="cell">
+        <span class="num-eyebrow">Step 04 · Enable</span>
+        <span class="name">Train the team</span>
+        <span class="desc">Playbooks, hands-on, champions. By week four, your team runs the system.</span>
+      </div>
+      <div class="cell">
+        <span class="num-eyebrow">Step 05 · Operate</span>
+        <span class="name">Stay on the line</span>
+        <span class="desc">Weekly ops calls, fractional operator in the room, until you cut us.</span>
+      </div>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+    <div class="page">03 / 06</div>
+  </section>
+
+  <!-- 4. Chart slide -->
+  <section class="slide light" aria-label="Chart" style="grid-template-rows: auto 1fr auto;">
+    <div class="stack">
+      <span class="eyebrow">Throughput · 90 days post-install</span>
+      <h2 class="h2">Cases processed per operator, per day.</h2>
+    </div>
+    <div class="chart-grid" style="align-self: center;">
+      <div>
+        <p class="body" style="font-size:20px;">Same headcount. Same EHR. Same compliance posture. Just the system installed underneath.</p>
+      </div>
+      <div class="bars">
+        <div class="bar-row"><span class="lbl">Day 0</span><span class="track"><span class="fill" style="width: 18%"></span></span><span class="val">14</span></div>
+        <div class="bar-row"><span class="lbl">Day 30</span><span class="track"><span class="fill" style="width: 38%"></span></span><span class="val">29</span></div>
+        <div class="bar-row"><span class="lbl">Day 60</span><span class="track"><span class="fill" style="width: 64%"></span></span><span class="val">48</span></div>
+        <div class="bar-row hl"><span class="lbl">Day 90</span><span class="track"><span class="fill" style="width: 96%"></span></span><span class="val">72</span></div>
+      </div>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+    <div class="page">04 / 06</div>
+  </section>
+
+  <!-- 5. Quote -->
+  <section class="slide dark quote" aria-label="Quote">
+    <div class="stack">
+      <span class="eyebrow">Operator note</span>
+      <p class="q">"We don't pitch tools. We install the system and stay on the line until it runs without us."</p>
+    </div>
+    <div>
+      <span class="attr">Dan Fazio · Legacy Labs</span>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+    <div class="page">05 / 06</div>
+  </section>
+
+  <!-- 6. Closing -->
+  <section class="slide dark closing" aria-label="Closing">
+    <div class="stack">
+      <span class="eyebrow">Act III · The fix</span>
+    </div>
+    <div class="stack" style="align-self: center;">
+      <h1 class="h1">Built for operators who've <span style="color: var(--accent)">lived it.</span></h1>
+      <a class="cta" href="https://legacylabsai.com">Book a strategy call</a>
+    </div>
+    <div class="wordmark">Legacy Labs</div>
+    <div class="page">06 / 06</div>
+  </section>
+
+</div>
+
+</body>
+</html>
